@@ -1,9 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 import os
 
 import timelapseconfig
 
-lastmonth = (datetime.now() - timedelta(15)).strftime(timelapseconfig.monthly_filename_date_formatstring)
+lastmonth = (date.today().replace(day=1) - timedelta(days=1)).strftime(timelapseconfig.monthly_filename_date_formatstring)
 output_fulldays_video_path = timelapseconfig.output_dir_for_monthly_timelapse_videos + lastmonth + "_fulldays.mp4"
 output_short_video_path = timelapseconfig.output_dir_for_monthly_timelapse_videos + lastmonth + "_short.mp4"
 
@@ -21,8 +21,8 @@ for dir in os.listdir(timelapseconfig.output_dir):
             returnval = os.system(cmd)
             print("Command returned: " + str(returnval))
 
-# ffmpeg -r 24 -pattern_type glob -i '2020-05-*/*.png' -s hd1080 -vcodec libx264 out05.mp4
-cmd = "ffmpeg -r 24 -pattern_type glob -i '" + lastmonth + "*/*.png' -s hd1080 -vcodec libx264 '" + output_fulldays_video_path + "'"
+# ffmpeg -r 24 -pattern_type glob -i '2020-05-*/*.png' -s hd720 -vcodec libx264 out05.mp4
+cmd = "ffmpeg -r 24 -pattern_type glob -i '" + lastmonth + "*/*.png' -pix_fmt yuv420p -s hd720 -vcodec libx264 '" + output_fulldays_video_path + "'"
 print("Running command: " + cmd)
 returnval = os.system(cmd)
 print("Command returned: " + str(returnval))
